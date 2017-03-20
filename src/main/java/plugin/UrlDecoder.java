@@ -19,10 +19,17 @@ import util.SlipboardUtils;
  * @author ahan
  *
  */
-public class UrlDecoder implements Plugin {
-  public static final int MODIFIERS = NativeInputEvent.CTRL_MASK;
-  public static final int KEY = NativeKeyEvent.VC_D;
+public class UrlDecoder extends Plugin {
 
+  public UrlDecoder() {
+    this(NativeInputEvent.CTRL_MASK, NativeKeyEvent.VC_D);
+  }
+
+  public UrlDecoder(int modifiers, int key) {
+    super(modifiers, key);
+  }
+
+  @Override
   public void execute() {
     String contents = SlipboardUtils.getSlipboardContentsAsStringFlavor();
     if (contents != null) {

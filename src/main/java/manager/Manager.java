@@ -9,8 +9,6 @@ import org.jnativehook.NativeInputEvent;
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import plugin.Plugin;
-import plugin.UrlDecoder;
-import plugin.UrlEncoder;
 import util.PackageUtils;
 
 /**
@@ -34,16 +32,17 @@ public class Manager {
     for (Class<?> clazz : clazzs) {
       if (Plugin.class.isAssignableFrom(clazz)
           && !StringUtils.equals(Plugin.class.getName(), clazz.getName())) {
-        // TODO 做注册插件功能
-        // System.out.println(clazz.getName());
+        try {
+          Plugin plugin = (Plugin) clazz.newInstance();
+          PLUGIN.put(NativeInputEvent.getModifiersText(plugin.getModifiers()) + "+"
+              + NativeKeyEvent.getKeyText(plugin.getKey()), plugin);
+        } catch (InstantiationException e) {
+          System.err.println(e.getMessage());
+        } catch (IllegalAccessException e) {
+          System.err.println(e.getMessage());
+        }
       }
     }
-
-    // FIXME 完善注册插件功能后删除添加插件的临时代码
-    PLUGIN.put(NativeInputEvent.getModifiersText(UrlEncoder.MODIFIERS) + "+"
-        + NativeKeyEvent.getKeyText(UrlEncoder.KEY), new UrlEncoder());
-    PLUGIN.put(NativeInputEvent.getModifiersText(UrlDecoder.MODIFIERS) + "+"
-        + NativeKeyEvent.getKeyText(UrlDecoder.KEY), new UrlDecoder());
   }
 
   /**

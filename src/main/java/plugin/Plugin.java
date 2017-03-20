@@ -6,9 +6,35 @@ package plugin;
  * @author ahan
  *
  */
-public interface Plugin {
+public abstract class Plugin {
+
+  private int modifiers;
+  private int key;
+
   /**
    * 事件触发时的执行方法，主要实现功能在这个方法里。
    */
-  void execute();
+  public abstract void execute();
+
+  public Plugin(int modifiers, int key) {
+    this.modifiers = modifiers;
+    this.key = key;
+  }
+
+  public int getModifiers() {
+    return modifiers;
+  }
+
+  public void setModifiers(int modifiers) {
+    this.modifiers = modifiers;
+  }
+
+  public int getKey() {
+    return key;
+  }
+
+  public void setKey(int key) {
+    this.key = key;
+  }
+
 }
